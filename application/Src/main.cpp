@@ -45,7 +45,7 @@ int main()
     frame esp(frame_Buffer, blue);    //用来和esp32通信
     modbus modbus(mb_rec_Buffer);   //modbus对象
     soil.structure_traMsg();    //构建发送报文
-
+    BON_INFO("test: ");
     while(1){
         //串口接收完毕
         if((esp_recFlag || debug_recFlag || modbus_recFlag) == SET){

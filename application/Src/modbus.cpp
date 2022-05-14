@@ -80,7 +80,7 @@ MODBUS_ERROR modbus::Modbus_ReceiveHandler(sensor& soil) const
 {
     uint8_t data_length = Buffer[2]; //获取数据长度
 
-    //将8bit的crc组合成16bit                           CRC_H|CRC_L
+    //将8bit的crc组合成16bit                    CRC_H|CRC_L
     uint16_t rec_crc = (Buffer[data_length+3] << 8) | Buffer[data_length+4]; //获取数据帧里的crc校验码。
     if(Buffer[0] == 0x01){
         //算一下rcr
@@ -91,15 +91,15 @@ MODBUS_ERROR modbus::Modbus_ReceiveHandler(sensor& soil) const
                     sensor::Function_03_Handler(Buffer+3, soil);
                     break;
                 default:
-                    BON_DEBUG("code error");
+                    BON_DEBUG("code error: %X", Buffer[1]);
                     return CODE_ERROR;  //功能码错误
             }
         }else {
-            BON_DEBUG("crc error");
+            BON_DEBUG("crc error:cal_crc:(%X) rec_crc:(%X)", calCRC, rec_crc);
             return CRC_ERROR;   //CRC校验错误
         }
     }else {
-        BON_DEBUG("id error");
+        BON_DEBUG("id error: %X", Buffer[0]);
         return ID_ERROR;    //从机ID错误
     }
     BON_DEBUG("modbus ok");
